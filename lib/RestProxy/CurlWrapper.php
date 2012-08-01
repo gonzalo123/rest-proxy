@@ -49,8 +49,7 @@ class CurlWrapper
     private function doMethod($s)
     {
         curl_setopt($s, CURLOPT_HEADER, 0);
-        curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);        print_r($headers);
-        die();
+        curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);
         $out    = curl_exec($s);
         $status = curl_getinfo($s, CURLINFO_HTTP_CODE);
         curl_close($s);
