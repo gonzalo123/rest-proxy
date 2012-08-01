@@ -49,7 +49,8 @@ class CurlWrapper
     private function doMethod($s)
     {
         curl_setopt($s, CURLOPT_HEADER, 0);
-        curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);        print_r($headers);
+        die();
         $out    = curl_exec($s);
         $status = curl_getinfo($s, CURLINFO_HTTP_CODE);
         curl_close($s);
@@ -57,10 +58,6 @@ class CurlWrapper
         if ($status != self::HTTP_OK) {
             throw new \Exception("http error: {$status}", $status);
         }
-
-        $headers = curl_getinfo($s);
-        print_r($headers);
-        die();
         return $out;
     }
 }
