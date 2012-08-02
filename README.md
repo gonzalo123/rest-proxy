@@ -5,7 +5,8 @@ Simple Rest Proxy
 
 Example
 =========================
-'''
+
+```
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -26,4 +27,4 @@ foreach($proxy->getHeaders() as $header) {
     header($header);
 }
 echo $proxy->getContent();
-'''
+```
