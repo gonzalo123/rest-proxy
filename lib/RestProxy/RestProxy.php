@@ -7,6 +7,9 @@ class RestProxy
     private $curl;
     private $map;
 
+    private $content;
+    private $headers;
+
     public function __construct(\Symfony\Component\HttpFoundation\Request $request, CurlWrapper $curl)
     {
         $this->request  = $request;
@@ -34,18 +37,29 @@ class RestProxy
 
             switch ($this->request->getMethod()) {
                 case 'GET':
-                    return $this->curl->doGet($url, $queryString);
+                    $this->content = $this->curl->doGet($url, $queryString);
                     break;
                 case 'POST':
-                    return $this->curl->doPost($url, $queryString);
+                    $this->content = $this->curl->doPost($url, $queryString);
                     break;
                 case 'DELETE':
-                    return $this->curl->doDelete($url, $queryString);
+                    $this->content = $this->curl->doDelete($url, $queryString);
                     break;
                 case 'PUT':
-                    return $this->curl->doPut($url, $queryString);
+                    $this->content = $this->curl->doPut($url, $queryString);
                     break;
             }
+            $this->headers = $this->curl->getHeaders();
         }
+    }
+
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    public function getContent()
+    {
+        return $this->content;
     }
 }

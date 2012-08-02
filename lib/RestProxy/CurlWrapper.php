@@ -46,17 +46,56 @@ class CurlWrapper
         return $this->doMethod($s);
     }
 
+    private $responseHeaders = array();
+    private $status;
+
     private function doMethod($s)
     {
-        curl_setopt($s, CURLOPT_HEADER, 0);
+        curl_setopt($s, CURLOPT_HEADER, TRUE);
         curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);
-        $out    = curl_exec($s);
-        $status = curl_getinfo($s, CURLINFO_HTTP_CODE);
+        $out                   = curl_exec($s);
+        $this->status          = curl_getinfo($s, CURLINFO_HTTP_CODE);
+        $this->responseHeaders = curl_getinfo($s, CURLINFO_HEADER_OUT);
         curl_close($s);
 
-        if ($status != self::HTTP_OK) {
-            throw new \Exception("http error: {$status}", $status);
+        list($this->responseHeaders, $content) = $this->decodeOut($out);
+        if ($this->status != self::HTTP_OK) {
+            throw new \Exception("http error: {$this->status}", $this->status);
         }
-        return $out;
+        return $content;
+    }
+
+    private function decodeOut($out)
+    {
+        // It should be a fancy way to do that :(
+        $headersFinished = FALSE;
+        $headers         = $content = array();
+        $data            = explode("\n", $out);
+        foreach ($data as $line) {
+            if (trim($line) == '') {
+                $headersFinished = TRUE;
+            } else {
+                if ($headersFinished === FALSE && strpos($line, ':') > 0) {
+                    //list($key, $value) = explode(": ", $line, 2);
+                    //$headers[$key] = $value;
+                    $headers[] = $line;
+                }
+
+                if ($headersFinished) {
+                    $content[] = $line;
+                }
+            }
+        }
+        return array($headers, implode("\n", $content));
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function getHeaders()
+    {
+        return $this->responseHeaders;
     }
 }
