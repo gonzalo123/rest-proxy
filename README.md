@@ -3,7 +3,7 @@ rest-proxy [![Build Status](https://secure.travis-ci.org/gonzalo123/rest-proxy.p
 
 Simple Rest Proxy
 
-Usage Example
+Example
 =========================
 
 ```
