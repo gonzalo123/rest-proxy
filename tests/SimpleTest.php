@@ -18,7 +18,8 @@ class TestRestProxy extends \PHPUnit_Framework_TestCase
 
         $proxy = new RestProxy($request, $curl);
         $proxy->register('github', 'https://api.github.com');
-        $output = json_decode($proxy->run(), TRUE);
+        $proxy->run()
+        $output = json_decode($proxy->getContent(), TRUE);
         $this->assertEquals(40, $output['followers']);
         $this->assertEquals('http://gonzalo123.wordpress.com/', $output['blog']);
     }
@@ -39,7 +40,8 @@ class TestRestProxy extends \PHPUnit_Framework_TestCase
 
         $proxy = new RestProxy($request, $curl);
         $proxy->register('github', 'https://api.github.com');
-        $output = json_decode($proxy->run(), TRUE);
+        $proxy->run()
+        $output = json_decode($proxy->getContent(), TRUE);
         $this->assertNotEquals(40, $output['followers']);
         $this->assertNotEquals('http://gonzalo123.wordpress.com/', $output['blog']);
     }
