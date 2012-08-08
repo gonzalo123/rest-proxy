@@ -28,3 +28,26 @@ foreach($proxy->getHeaders() as $header) {
 }
 echo $proxy->getContent();
 ```
+
+How to install:
+=========================
+Install composer:
+```
+curl -s https://getcomposer.org/installer | php
+```
+
+Create a new project:
+
+```
+php composer.phar create-project gonzalo123/rest-proxy proxy
+```
+
+Run dummy server (only with PHP5.4)
+
+```
+cd proxy
+php -S localhost:8888 -t www/
+```
+
+Open a web browser and type: http://localhost:8888/github/users/gonzalo123
+
