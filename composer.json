@@ -12,7 +12,6 @@
     "require": {
         "php": ">=5.3.0",
         "ext-curl": "*",
-        "symfony/class-loader":"dev-master",
         "symfony/http-foundation":"dev-master"
     },
     "autoload": {
