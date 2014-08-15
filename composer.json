@@ -8,16 +8,23 @@
             "homepage": "http://gonzalo123.wordpress.com/"
         }
     ],
-    
+    "require-dev": {
+        "phpunit/phpunit": "dev-master",
+        "phpunit/php-code-coverage": "dev-master",
+        "phpunit/phpunit-mock-objects": "dev-master"
+    },
     "require": {
         "php": ">=5.5.0",
         "ext-curl": "*",
-        "symfony/http-foundation":"dev-master",
+        "symfony/http-foundation": "dev-master",
         "symfony/expression-language": "dev-master"
     },
     "autoload": {
         "psr-0": {
             "RestProxy": "lib/"
         }
+    },
+    "config": {
+        "bin-dir": "bin/"
     }
 }
