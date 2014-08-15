@@ -51,6 +51,8 @@ class CurlWrapper
 
     private function doMethod($s)
     {
+        $headers = array("User-Agent: gonzalo123/rest-proxy");
+        curl_setopt($s, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($s, CURLOPT_HEADER, TRUE);
         curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);
         $out                   = curl_exec($s);
