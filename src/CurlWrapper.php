@@ -4,6 +4,8 @@ namespace RestProxy;
 class CurlWrapper
 {
     const HTTP_OK = 200;
+    const USER_AGENT = 'gonzalo123/rest-proxy';
+
     private $responseHeaders = [];
     private $status;
 
@@ -53,12 +55,12 @@ class CurlWrapper
 
     private function doMethod($s)
     {
-        $headers = ["User-Agent: gonzalo123/rest-proxy"];
+        $headers = ["User-Agent: " . self::USER_AGENT];
         curl_setopt($s, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($s, CURLOPT_HEADER, TRUE);
         curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);
-        $out = curl_exec($s);
-        $this->status = curl_getinfo($s, CURLINFO_HTTP_CODE);
+        $out                   = curl_exec($s);
+        $this->status          = curl_getinfo($s, CURLINFO_HTTP_CODE);
         $this->responseHeaders = curl_getinfo($s, CURLINFO_HEADER_OUT);
         curl_close($s);
 
@@ -74,8 +76,8 @@ class CurlWrapper
     {
         // It should be a fancy way to do that :(
         $headersFinished = FALSE;
-        $headers = $content = [];
-        $data = explode("\n", $out);
+        $headers         = $content = [];
+        $data            = explode("\n", $out);
         foreach ($data as $line) {
             if (trim($line) == '') {
                 $headersFinished = TRUE;
@@ -89,6 +91,7 @@ class CurlWrapper
                 }
             }
         }
+
         return [$headers, implode("\n", $content)];
     }
 
