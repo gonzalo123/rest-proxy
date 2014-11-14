@@ -10,6 +10,7 @@ $proxy = new RestProxy(
     Request::createFromGlobals(),
     new CurlWrapper()
     );
+$proxy->register('github/example/With/2/destinations', 'https://api.github.com');
 $proxy->register('github', 'https://api.github.com');
 $proxy->run();
 

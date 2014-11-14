@@ -21,23 +21,26 @@ class RestProxy
         $this->map[$name] = $url;
     }
 
-    public function run()
+        public function run()
     {
         foreach ($this->map as $name => $mapUrl) {
-            return $this->dispatch($name, $mapUrl);
+            $url = $this->request->getPathInfo();
+            if (strpos($url, $name) == 1) {
+                $url = $mapUrl . str_replace("/{$name}", NULL, $url);
+                return $this->dispatch($url);
+            }
         }
+        return $this->dispatch($url);
     }
 
-    private function dispatch($name, $mapUrl)
+    private function dispatch($url)
     {
-        $url = $this->request->getPathInfo();
-        if (strpos($url, $name) == 1) {
-            $url         = $mapUrl . str_replace("/{$name}", NULL, $url);
             $queryString = $this->request->getQueryString();
 
             switch ($this->request->getMethod()) {
                 case 'GET':
                     $this->content = $this->curl->doGet($url, $queryString);
+                    //throw new \Exception ( $this->content);
                     break;
                 case 'POST':
                     $this->content = $this->curl->doPost($url, $queryString);
@@ -50,8 +53,9 @@ class RestProxy
                     break;
             }
             $this->headers = $this->curl->getHeaders();
-        }
+
     }
+
 
     public function getHeaders()
     {
