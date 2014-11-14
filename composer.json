@@ -5,14 +5,9 @@
         {
             "name": "Gonzalo Ayuso",
             "email": "gonzalo123@gmail.com",
-            "homepage": "http://gonzalo123.wordpress.com/"
+            "homepage": "http://gonzalo123.com/"
         }
     ],
-    "require-dev": {
-        "phpunit/phpunit": "dev-master",
-        "phpunit/php-code-coverage": "dev-master",
-        "phpunit/phpunit-mock-objects": "dev-master"
-    },
     "require": {
         "php": ">=5.5.0",
         "ext-curl": "*",
@@ -20,11 +15,13 @@
         "symfony/expression-language": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "RestProxy": "lib/"
+        "psr-4": {
+            "RestProxy\\": "src/"
         }
     },
-    "config": {
-        "bin-dir": "bin/"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     }
 }

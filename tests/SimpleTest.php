@@ -1,5 +1,6 @@
 <?php
 use RestProxy\RestProxy;
+
 class TestRestProxy extends \PHPUnit_Framework_TestCase
 {
     function testValidRequest()

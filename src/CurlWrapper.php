@@ -4,6 +4,8 @@ namespace RestProxy;
 class CurlWrapper
 {
     const HTTP_OK = 200;
+    private $responseHeaders = [];
+    private $status;
 
     public function doGet($url, $queryString = NULL)
     {
@@ -21,6 +23,7 @@ class CurlWrapper
         if (!is_null($queryString)) {
             curl_setopt($s, CURLOPT_POSTFIELDS, parse_str($queryString));
         }
+
         return $this->doMethod($s);
     }
 
@@ -32,6 +35,7 @@ class CurlWrapper
         if (!is_null($queryString)) {
             curl_setopt($s, CURLOPT_POSTFIELDS, parse_str($queryString));
         }
+
         return $this->doMethod($s);
     }
 
@@ -43,20 +47,18 @@ class CurlWrapper
         if (!is_null($queryString)) {
             curl_setopt($s, CURLOPT_POSTFIELDS, parse_str($queryString));
         }
+
         return $this->doMethod($s);
     }
 
-    private $responseHeaders = array();
-    private $status;
-
     private function doMethod($s)
     {
-        $headers = array("User-Agent: gonzalo123/rest-proxy");
+        $headers = ["User-Agent: gonzalo123/rest-proxy"];
         curl_setopt($s, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($s, CURLOPT_HEADER, TRUE);
         curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);
-        $out                   = curl_exec($s);
-        $this->status          = curl_getinfo($s, CURLINFO_HTTP_CODE);
+        $out = curl_exec($s);
+        $this->status = curl_getinfo($s, CURLINFO_HTTP_CODE);
         $this->responseHeaders = curl_getinfo($s, CURLINFO_HEADER_OUT);
         curl_close($s);
 
@@ -64,6 +66,7 @@ class CurlWrapper
         if ($this->status != self::HTTP_OK) {
             throw new \Exception("http error: {$this->status}", $this->status);
         }
+
         return $content;
     }
 
@@ -71,15 +74,13 @@ class CurlWrapper
     {
         // It should be a fancy way to do that :(
         $headersFinished = FALSE;
-        $headers         = $content = array();
-        $data            = explode("\n", $out);
+        $headers = $content = [];
+        $data = explode("\n", $out);
         foreach ($data as $line) {
             if (trim($line) == '') {
                 $headersFinished = TRUE;
             } else {
                 if ($headersFinished === FALSE && strpos($line, ':') > 0) {
-                    //list($key, $value) = explode(": ", $line, 2);
-                    //$headers[$key] = $value;
                     $headers[] = $line;
                 }
 
@@ -88,7 +89,7 @@ class CurlWrapper
                 }
             }
         }
-        return array($headers, implode("\n", $content));
+        return [$headers, implode("\n", $content)];
     }
 
     public function getStatus()
