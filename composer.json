@@ -11,8 +11,8 @@
     "require": {
         "php": ">=5.5.0",
         "ext-curl": "*",
-        "symfony/http-foundation": "dev-master",
-        "symfony/expression-language": "dev-master"
+        "symfony/http-foundation": "2.7.*@dev",
+        "symfony/expression-language": "2.7.*@dev"
     },
     "autoload": {
         "psr-4": {
