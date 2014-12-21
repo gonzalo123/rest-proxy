@@ -6,8 +6,8 @@ class CurlWrapper
     const HTTP_OK = 200;
     const USER_AGENT = 'gonzalo123/rest-proxy';
 
-    private $responseHeaders = [];
-    private $status;
+    protected $responseHeaders = [];
+    protected $status;
 
     public function doGet($url, $queryString = NULL)
     {
@@ -53,7 +53,7 @@ class CurlWrapper
         return $this->doMethod($s);
     }
 
-    private function doMethod($s)
+    protected function doMethod($s)
     {
         $headers = ["User-Agent: " . self::USER_AGENT];
         curl_setopt($s, CURLOPT_HTTPHEADER, $headers);
@@ -72,7 +72,7 @@ class CurlWrapper
         return $content;
     }
 
-    private function decodeOut($out)
+    protected function decodeOut($out)
     {
         // It should be a fancy way to do that :(
         $headersFinished = FALSE;
