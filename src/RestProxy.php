@@ -24,10 +24,10 @@ class RestProxy
         self::PUT    => 'doPut',
     ];
 
-    public function __construct(Request $request, CurlWrapper $curl)
+    public function __construct(Request $request = null, CurlWrapper $curl = null)
     {
-        $this->request = $request;
-        $this->curl    = $curl;
+        $this->request = is_null($request) ? Request::createFromGlobals() : $request;
+        $this->curl    = is_null($curl) ? CurlWrapper::createWrapper() : $curl;
     }
 
     public function register($name, $url)

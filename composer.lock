@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "3386f05dca98d0b90fb3dab8ed81ae82",
+    "hash": "8d6facf984ca7518929314cf011d714c",
     "packages": [
         {
             "name": "symfony/expression-language",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "b4672fa5f0e1d68bf477d4eaf12e4c0f615af834"
+                "reference": "b041b651569d5e1cbb59b38126f1748dc87218a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/b4672fa5f0e1d68bf477d4eaf12e4c0f615af834",
-                "reference": "b4672fa5f0e1d68bf477d4eaf12e4c0f615af834",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/b041b651569d5e1cbb59b38126f1748dc87218a0",
+                "reference": "b041b651569d5e1cbb59b38126f1748dc87218a0",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
             ],
             "description": "Symfony ExpressionLanguage Component",
             "homepage": "http://symfony.com",
-            "time": "2014-11-11 08:37:22"
+            "time": "2014-12-12 16:24:25"
         },
         {
             "name": "symfony/http-foundation",
@@ -59,12 +59,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "440c406598d32ea8522bf1afaad3e523a441a9e3"
+                "reference": "33734f0092d4566d9f71f966a1962490889b7bd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/440c406598d32ea8522bf1afaad3e523a441a9e3",
-                "reference": "440c406598d32ea8522bf1afaad3e523a441a9e3",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/33734f0092d4566d9f71f966a1962490889b7bd4",
+                "reference": "33734f0092d4566d9f71f966a1962490889b7bd4",
                 "shasum": ""
             },
             "require": {
@@ -103,7 +103,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-11-11 08:37:22"
+            "time": "2014-12-26 10:31:50"
         }
     ],
     "packages-dev": [],

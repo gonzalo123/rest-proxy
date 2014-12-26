@@ -3,18 +3,24 @@ namespace RestProxy;
 
 class CurlWrapper
 {
-    const HTTP_OK = 200;
-    const USER_AGENT = 'gonzalo123/rest-proxy';
+    private $executer;
 
-    private $responseHeaders = [];
-    private $status;
+    public function __construct(ExecuterIface $executer)
+    {
+        $this->executer = $executer;
+    }
+
+    public static function createWrapper()
+    {
+        return new self(new CurlExecuter(new OutputDecoder()));
+    }
 
     public function doGet($url, $queryString = NULL)
     {
         $s = curl_init();
         curl_setopt($s, CURLOPT_URL, is_null($queryString) ? $url : $url . '?' . $queryString);
 
-        return $this->doMethod($s);
+        return $this->executer->doMethod($s);
     }
 
     public function doPost($url, $queryString = NULL)
@@ -26,7 +32,7 @@ class CurlWrapper
             curl_setopt($s, CURLOPT_POSTFIELDS, parse_str($queryString));
         }
 
-        return $this->doMethod($s);
+        return$this->executer->doMethod($s);
     }
 
     public function doPut($url, $queryString = NULL)
@@ -38,7 +44,7 @@ class CurlWrapper
             curl_setopt($s, CURLOPT_POSTFIELDS, parse_str($queryString));
         }
 
-        return $this->doMethod($s);
+        return $this->executer->doMethod($s);
     }
 
     public function doDelete($url, $queryString = NULL)
@@ -50,58 +56,16 @@ class CurlWrapper
             curl_setopt($s, CURLOPT_POSTFIELDS, parse_str($queryString));
         }
 
-        return $this->doMethod($s);
-    }
-
-    private function doMethod($s)
-    {
-        $headers = ["User-Agent: " . self::USER_AGENT];
-        curl_setopt($s, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($s, CURLOPT_HEADER, TRUE);
-        curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);
-        $out                   = curl_exec($s);
-        $this->status          = curl_getinfo($s, CURLINFO_HTTP_CODE);
-        $this->responseHeaders = curl_getinfo($s, CURLINFO_HEADER_OUT);
-        curl_close($s);
-
-        list($this->responseHeaders, $content) = $this->decodeOut($out);
-        if ($this->status != self::HTTP_OK) {
-            throw new \Exception("http error: {$this->status}", $this->status);
-        }
-
-        return $content;
-    }
-
-    private function decodeOut($out)
-    {
-        // It should be a fancy way to do that :(
-        $headersFinished = FALSE;
-        $headers         = $content = [];
-        $data            = explode("\n", $out);
-        foreach ($data as $line) {
-            if (trim($line) == '') {
-                $headersFinished = TRUE;
-            } else {
-                if ($headersFinished === FALSE && strpos($line, ':') > 0) {
-                    $headers[] = $line;
-                }
-
-                if ($headersFinished) {
-                    $content[] = $line;
-                }
-            }
-        }
-
-        return [$headers, implode("\n", $content)];
+        return $this->executer->doMethod($s);
     }
 
     public function getStatus()
     {
-        return $this->status;
+        return $this->executer->getStatus();
     }
 
     public function getHeaders()
     {
-        return $this->responseHeaders;
+        return $this->executer->getHeaders();
     }
 }
