@@ -16,9 +16,9 @@ class CurlExecuter implements ExecuterIface
         $this->decoder = $decoder;
     }
 
-    public function doMethod($s)
+    public function doMethod($s, $headers = array())
     {
-        $headers = ["User-Agent: " . self::USER_AGENT];
+        $headers = array_merge(["User-Agent: " . self::USER_AGENT], $headers);
         curl_setopt($s, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($s, CURLOPT_HEADER, TRUE);
         curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);
