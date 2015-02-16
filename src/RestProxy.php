@@ -62,8 +62,11 @@ class RestProxy
     {
         $queryString = $this->request->getQueryString();
         $action      = $this->getActionName($this->request->getMethod());
+        $content     = $this->request->getContent();
+        $headers     = $this->request->headers;
+        $contentType = is_null($headers) ? NULL : $headers->get('content-type');
 
-        $this->content = $this->curl->$action($url, $queryString);
+        $this->content = $this->curl->$action($url, $queryString, $content, $contentType);
         $this->headers = $this->curl->getHeaders();
     }
 
