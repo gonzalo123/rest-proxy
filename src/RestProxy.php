@@ -11,6 +11,7 @@ class RestProxy
 
     private $content;
     private $headers;
+    private $status;
 
     const GET = "GET";
     const POST = "POST";
@@ -58,6 +59,11 @@ class RestProxy
         return $this->content;
     }
 
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
     private function dispatch($url)
     {
         $queryString = $this->request->getQueryString();
@@ -68,6 +74,7 @@ class RestProxy
 
         $this->content = $this->curl->$action($url, $queryString, $content, $contentType);
         $this->headers = $this->curl->getHeaders();
+        $this->status  = $this->curl->getStatus();
     }
 
     private function getActionName($requestMethod)
