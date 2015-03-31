@@ -4,7 +4,7 @@ namespace RestProxy;
 
 class CurlExecuter implements ExecuterIface
 {
-    const HTTP_OK = 200;
+    const HTTP_SUCCESS = 2;
     const USER_AGENT = 'gonzalo123/rest-proxy';
 
     private $responseHeaders = [];
@@ -28,11 +28,16 @@ class CurlExecuter implements ExecuterIface
         curl_close($s);
 
         list($this->responseHeaders, $content) = $this->decoder->decodeOutput($out);
-        if ($this->status != self::HTTP_OK) {
+        if (!$this->isSuccessful($this->status)) {
             throw new \Exception("http error: {$this->status}", $this->status);
         }
 
         return $content;
+    }
+
+    private function isSuccessful($code) {
+        $codeFamily = (int)($code/100);
+        return $codeFamily == self::HTTP_SUCCESS;
     }
 
     public function getStatus()
