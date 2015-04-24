@@ -1,5 +1,5 @@
 <?php
-namespace RestProxy;
+namespace AppManager\RestProxy;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -16,12 +16,14 @@ class RestProxy
     const POST = "POST";
     const DELETE = "DELETE";
     const PUT = "PUT";
+    const OPTIONS = "OPTIONS";
 
     private $actions = [
-        self::GET    => 'doGet',
-        self::POST   => 'doPost',
-        self::DELETE => 'doDelete',
-        self::PUT    => 'doPut',
+        self::GET     => 'doGet',
+        self::POST    => 'doPost',
+        self::DELETE  => 'doDelete',
+        self::PUT     => 'doPut',
+        self::OPTIONS => 'doOptions',
     ];
 
     public function __construct(Request $request, CurlWrapper $curl)
@@ -40,7 +42,7 @@ class RestProxy
         $url = $this->request->getPathInfo();
 
         foreach ($this->map as $name => $mapUrl) {
-            if (strpos($url, $name) == 1) {
+            if (strpos($url, $name) == 1 || $name == "/") {
                 return $this->dispatch($mapUrl . str_replace("/{$name}", NULL, $url));
             }
         }
@@ -63,7 +65,13 @@ class RestProxy
         $queryString = $this->request->getQueryString();
         $action      = $this->getActionName($this->request->getMethod());
 
-        $this->content = $this->curl->$action($url, $queryString);
+        // Parse JSON input data
+        $data = NULL;
+        if (0 === strpos($this->request->headers->get('Content-Type'), 'application/json')) {
+            $data = $this->request->getContent();
+        }
+
+        $this->content = $this->curl->$action($url, $queryString, $data);
         $this->headers = $this->curl->getHeaders();
     }
 
