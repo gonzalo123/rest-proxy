@@ -16,12 +16,14 @@ class RestProxy
     const POST = "POST";
     const DELETE = "DELETE";
     const PUT = "PUT";
+    const OPTIONS = "OPTIONS";
 
     private $actions = [
-        self::GET    => 'doGet',
-        self::POST   => 'doPost',
-        self::DELETE => 'doDelete',
-        self::PUT    => 'doPut',
+        self::GET     => 'doGet',
+        self::POST    => 'doPost',
+        self::DELETE  => 'doDelete',
+        self::PUT     => 'doPut',
+        self::OPTIONS => 'doOptions',
     ];
 
     public function __construct(Request $request, CurlWrapper $curl)
@@ -40,7 +42,7 @@ class RestProxy
         $url = $this->request->getPathInfo();
 
         foreach ($this->map as $name => $mapUrl) {
-            if (strpos($url, $name) == 1) {
+            if (strpos($url, $name) == 1 || $name == "/") {
                 return $this->dispatch($mapUrl . str_replace("/{$name}", NULL, $url));
             }
         }
