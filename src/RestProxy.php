@@ -5,23 +5,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RestProxy
 {
-    private $request;
-    private $curl;
-    private $map;
-
-    private $content;
-    private $headers;
-
     const GET = "GET";
     const POST = "POST";
     const DELETE = "DELETE";
     const PUT = "PUT";
+    const OPTIONS = "OPTIONS";
+    
+    private $request;
+    private $curl;
+    private $map;
+    private $content;
+    private $headers;
 
     private $actions = [
-        self::GET    => 'doGet',
-        self::POST   => 'doPost',
-        self::DELETE => 'doDelete',
-        self::PUT    => 'doPut',
+        self::GET     => 'doGet',
+        self::POST    => 'doPost',
+        self::DELETE  => 'doDelete',
+        self::PUT     => 'doPut',
+        self::OPTIONS => 'doOptions',
     ];
 
     public function __construct(Request $request, CurlWrapper $curl)
@@ -38,13 +39,11 @@ class RestProxy
     public function run()
     {
         $url = $this->request->getPathInfo();
-
         foreach ($this->map as $name => $mapUrl) {
-            if (strpos($url, $name) == 1 || $url == "/") {
+            if (strpos($url, $name) == 1 || $name == "/") {
                 return $this->dispatch($mapUrl . str_replace("/{$name}", NULL, $url));
             }
         }
-
         throw new \Exception("Not match");
     }
 
@@ -60,9 +59,8 @@ class RestProxy
 
     private function dispatch($url)
     {
-        $queryString = $this->request->getQueryString();
-        $action      = $this->getActionName($this->request->getMethod());
-
+        $queryString   = $this->request->getQueryString();
+        $action        = $this->getActionName($this->request->getMethod());
         $this->content = $this->curl->$action($url, $queryString);
         $this->headers = $this->curl->getHeaders();
     }
