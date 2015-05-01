@@ -7,7 +7,23 @@ class CurlWrapper
     const USER_AGENT = 'gonzalo123/rest-proxy';
 
     private $responseHeaders = [];
+    private $requestHeaders = [];
+    private $options = [];
     private $status;
+
+    function __construct($requestHeaders = [], $options = [])
+    {
+        if (count($requestHeaders) > 0 && is_array($requestHeaders)) {
+            $this->requestHeaders   = $requestHeaders;
+            $this->requestHeaders[] = "User-Agent: " . self::USER_AGENT;
+        } else {
+            $this->requestHeaders = ["User-Agent: " . self::USER_AGENT];
+        }
+        if (count($options) > 0 && is_array($options)) {
+            $this->options = $options;
+        }
+    }
+
 
     public function doGet($url, $queryString = NULL)
     {
@@ -55,10 +71,12 @@ class CurlWrapper
 
     private function doMethod($s)
     {
-        $headers = ["User-Agent: " . self::USER_AGENT];
-        curl_setopt($s, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($s, CURLOPT_HTTPHEADER, $this->requestHeaders);
         curl_setopt($s, CURLOPT_HEADER, TRUE);
         curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);
+        foreach ($this->options as $option => $value) {
+            curl_setopt($s, $option, $value);
+        }
         $out                   = curl_exec($s);
         $this->status          = curl_getinfo($s, CURLINFO_HTTP_CODE);
         $this->responseHeaders = curl_getinfo($s, CURLINFO_HEADER_OUT);
