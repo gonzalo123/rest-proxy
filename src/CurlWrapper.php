@@ -11,19 +11,15 @@ class CurlWrapper
     private $options = [];
     private $status;
 
-    /**
-     * @param array $requestHeaders Additional Curl Request headers
-     * @param array $options Array of key value pairs for additional Curl options (e.g. CURLOPT_SSL_VERIFYHOST => 0)
-     */
-    function __construct($requestHeaders = array(), $options = array())
+    function __construct($requestHeaders = [], $options = [])
     {
-        if ( count($requestHeaders) > 0 && is_array($requestHeaders) ) {
-            $this->requestHeaders = $requestHeaders;
+        if (count($requestHeaders) > 0 && is_array($requestHeaders)) {
+            $this->requestHeaders   = $requestHeaders;
             $this->requestHeaders[] = "User-Agent: " . self::USER_AGENT;
         } else {
             $this->requestHeaders = ["User-Agent: " . self::USER_AGENT];
         }
-        if ( count($options) > 0 && is_array($options) ) {
+        if (count($options) > 0 && is_array($options)) {
             $this->options = $options;
         }
     }
@@ -78,8 +74,7 @@ class CurlWrapper
         curl_setopt($s, CURLOPT_HTTPHEADER, $this->requestHeaders);
         curl_setopt($s, CURLOPT_HEADER, TRUE);
         curl_setopt($s, CURLOPT_RETURNTRANSFER, TRUE);
-        foreach ($this->options as $option => $value)
-        {
+        foreach ($this->options as $option => $value) {
             curl_setopt($s, $option, $value);
         }
         $out                   = curl_exec($s);
