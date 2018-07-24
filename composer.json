@@ -1,5 +1,5 @@
 {
-    "name": "gonzalo123/rest-proxy",
+    "name": "DP-Zinc/rest-proxy",
     "description": "Simple rest proxy",
     "authors": [
         {
@@ -11,8 +11,8 @@
     "require": {
         "php": ">=5.5.0",
         "ext-curl": "*",
-        "symfony/http-foundation": "dev-master",
-        "symfony/expression-language": "dev-master"
+        "symfony/http-foundation": "3.0.9",
+        "symfony/expression-language": "3.0.9"
     },
     "autoload": {
         "psr-4": {
